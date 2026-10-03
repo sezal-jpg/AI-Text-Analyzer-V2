@@ -1,0 +1,9 @@
+streamlit
+transformers
+torch
+torchvision==0.29.1
+accelerate
+sentencepiece
+azure-ai-textanalytics
+azure-core
+python-dotenv
