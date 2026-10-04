@@ -1,0 +1,12 @@
+properties:
+  template:
+    containers:
+      - name: textshield-ai
+        probes:
+          - type: startup
+            tcpSocket:
+              port: 8501
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 60

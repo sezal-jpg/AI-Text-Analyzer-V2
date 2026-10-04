@@ -712,7 +712,7 @@ if analyze:
 
             with st.spinner(
                 "✨ Generating continuation..."):
-                continuation = "Generation temporarily disabled for deployment testing."
+                continuation = generate_text(safe_text)
 
             if continuation:
 
