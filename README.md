@@ -8,7 +8,7 @@ Detect and remove sensitive information before sending text to downstream AI and
 🚀 Live Demo
 
 Azure Deployment:
-https://textshield-ai.lemontree-cb7ad68d.eastus.azurecontainerapps.io
+https://sezal-jpg.github.io/AI-Text-Analyzer-V2/
 GitHub Repository:
 https://github.com/sezal-jpg/AI-Text-Analyzer-V2
 
@@ -310,6 +310,6 @@ BTech — Artificial Intelligence & Machine Learning
 
 📌 Project Links
 Live Application:
-https://textshield-ai.lemontree-cb7ad68d.eastus.azurecontainerapps.io
+https://sezal-jpg.github.io/AI-Text-Analyzer-V2/
 GitHub:
 https://github.com/sezal-jpg/AI-Text-Analyzer-V2
