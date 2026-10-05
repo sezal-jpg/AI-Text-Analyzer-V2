@@ -115,11 +115,43 @@
             Please wait a moment.
         </div>
 
-        <div class="privacy">
-            🔒 Privacy-First AI Pipeline
-        </div>
+           <div class="privacy">
+        🔒 Privacy-First AI Pipeline
+    </div>
 
     </div>
+
+    <script>
+        const azureApp =
+            "https://textshield-ai.lemontree-cb7ad68d.eastus.azurecontainerapps.io";
+
+        let attempts = 0;
+        const maxAttempts = 60;
+
+        async function checkAzureApp() {
+
+            try {
+
+                await fetch(azureApp, {
+                    mode: "no-cors",
+                    cache: "no-store"
+                });
+
+                window.location.href = azureApp;
+                return;
+
+            } catch (error) {
+
+                attempts++;
+
+                if (attempts < maxAttempts) {
+                    setTimeout(checkAzureApp, 2000);
+                }
+            }
+        }
+
+        checkAzureApp();
+    </script>
 
 </body>
 </html>
