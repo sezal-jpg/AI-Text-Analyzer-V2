@@ -1,9 +1,6 @@
 import streamlit as st
 from services.pii_service import scan_and_redact
-from services.language_service import (
-    analyze_sentiment,
-    extract_key_phrases,
-    recognize_entities,)
+from services.language_service import (analyze_sentiment,extract_key_phrases,recognize_entities,)
 from services.generation_service import generate_text
 from utils.text_stats import calculate_stats
 
@@ -11,7 +8,8 @@ st.set_page_config(
     page_title="TextShield AI",
     page_icon="🛡️",
     layout="wide",
-    initial_sidebar_state="collapsed",)
+    initial_sidebar_state="collapsed",
+)
 
 
 st.markdown(
@@ -306,6 +304,11 @@ div.stButton > button:hover {
     unsafe_allow_html=True,
 )
 
+
+# =====================================================
+# HEADER
+# =====================================================
+
 st.markdown(
     """
 <div class="brand">
@@ -323,6 +326,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
+# =====================================================
+# PRIVACY BANNER
+# =====================================================
+
 st.markdown(
     '<div class="privacy-card">'
     '<div class="privacy-title">'
@@ -337,6 +345,10 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
+# =====================================================
+# TEXT INPUT
+# =====================================================
 
 st.markdown(
     '<div class="section-title">Analyze your text</div>',
@@ -361,10 +373,16 @@ text = st.text_area(
     ),
 )
 
+
+# =====================================================
+# ANALYZE BUTTON
+# =====================================================
+
 analyze = st.button(
     "🔍  Analyze Text",
     use_container_width=True,
 )
+
 
 if analyze:
 
@@ -378,6 +396,10 @@ if analyze:
 
         try:
 
+            # =================================================
+            # PII FIREWALL
+            # =================================================
+
             with st.spinner(
                 "🔒 Scanning text for sensitive information..."
             ):
@@ -385,7 +407,10 @@ if analyze:
                 pii_result = scan_and_redact(text)
 
                 safe_text = pii_result["redacted_text"]
-                st.session_state['safe_text']=safe_text
+
+                st.session_state["safe_text"] = safe_text
+                st.session_state["analysis_done"] = True
+
 
             if pii_result["pii_detected"]:
 
@@ -399,6 +424,11 @@ if analyze:
                 st.success(
                     "🔒 Protected — No sensitive information detected."
                 )
+
+
+            # =================================================
+            # PRIVACY FIREWALL REPORT
+            # =================================================
 
             with st.container(border=True):
 
@@ -471,6 +501,11 @@ if analyze:
                         unsafe_allow_html=True,
                     )
 
+
+            # =================================================
+            # SANITIZED TEXT
+            # =================================================
+
             with st.expander(
                 "🔐 View sanitized text"
             ):
@@ -479,6 +514,11 @@ if analyze:
                     safe_text,
                     language="text",
                 )
+
+
+            # =================================================
+            # TEXT STATISTICS
+            # =================================================
 
             stats = calculate_stats(safe_text)
 
@@ -490,6 +530,8 @@ if analyze:
             )
 
             col1, col2, col3, col4 = st.columns(4)
+
+
             with col1:
 
                 st.markdown(
@@ -549,8 +591,14 @@ if analyze:
                     unsafe_allow_html=True,
                 )
 
+
+            # =================================================
+            # AZURE AI LANGUAGE
+            # =================================================
+
             with st.spinner(
-                "🧠 Running Azure AI analysis..."):
+                "🧠 Running Azure AI analysis..."
+            ):
 
                 sentiment = analyze_sentiment(
                     safe_text
@@ -564,6 +612,7 @@ if analyze:
                     safe_text
                 )
 
+
             st.markdown(
                 '<div class="section-title">'
                 '🧠 Language Intelligence'
@@ -576,6 +625,11 @@ if analyze:
                 2,
                 gap="large",
             )
+
+
+            # =================================================
+            # SENTIMENT
+            # =================================================
 
             with left:
 
@@ -621,6 +675,11 @@ if analyze:
                             f'{sentiment["negative"]:.1%}',
                         )
 
+
+            # =================================================
+            # KEY PHRASES
+            # =================================================
+
             with right:
 
                 with st.container(border=True):
@@ -655,6 +714,11 @@ if analyze:
                         st.caption(
                             "No key phrases detected."
                         )
+
+
+            # =================================================
+            # NAMED ENTITIES
+            # =================================================
 
             st.markdown(
                 '<div class="section-title">'
@@ -696,44 +760,6 @@ if analyze:
                         "No named entities detected."
                     )
 
-            if "safe_text" in st.session_state:
-
-              st.markdown(  '<div class="section-title">'
-                '✨ AI Text Continuation'
-                 '</div>',
-                  unsafe_allow_html=True,
-    )
-
-              st.markdown(  '<div class="ai-description">'
-             'Generated from the privacy-sanitized text using '
-              'the Qwen instruction-tuned language model.'
-              '</div>',
-              unsafe_allow_html=True,
-    )
-
-              generate_continuation = st.button( "✨ Generate AI Continuation",
-                   use_container_width=True,)
-    
-              if generate_continuation:
-
-                with st.spinner("✨ Loading AI model and generating continuation..." ):
-
-                   continuation = generate_text(st.session_state["safe_text"] )
-
-                if continuation:
-
-                    with st.container(border=True):
-                     st.markdown(
-                    '<div class="ai-label">'
-                    '✨ GENERATED CONTINUATION'
-                    '</div>',
-                    unsafe_allow_html=True,
-                )
-
-                     st.write(continuation)
-
-                else:
-                   st.info( "The model did not generate additional text." )
 
         except Exception as e:
 
@@ -742,6 +768,78 @@ if analyze:
             )
 
             st.exception(e)
+
+
+# =====================================================
+# AI TEXT CONTINUATION
+# =====================================================
+
+if "safe_text" in st.session_state:
+
+    st.markdown(
+        '<div class="section-title">'
+        '✨ AI Text Continuation'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        '<div class="ai-description">'
+        'Generated from the privacy-sanitized text using '
+        'the Qwen instruction-tuned language model.'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
+    generate_continuation = st.button(
+        "✨ Generate AI Continuation",
+        use_container_width=True,
+    )
+
+    if generate_continuation:
+
+        try:
+
+            with st.spinner(
+                "✨ Loading AI model and generating continuation..."
+            ):
+
+                continuation = generate_text(
+                    st.session_state["safe_text"]
+                )
+
+
+            if continuation:
+
+                with st.container(border=True):
+
+                    st.markdown(
+                        '<div class="ai-label">'
+                        '✨ GENERATED CONTINUATION'
+                        '</div>',
+                        unsafe_allow_html=True,
+                    )
+
+                    st.write(continuation)
+
+            else:
+
+                st.info(
+                    "The model did not generate additional text."
+                )
+
+        except Exception as e:
+
+            st.error(
+                "An error occurred while generating the AI continuation."
+            )
+
+            st.exception(e)
+
+
+# =====================================================
+# FOOTER
+# =====================================================
 
 st.markdown(
     '<div class="footer">'
