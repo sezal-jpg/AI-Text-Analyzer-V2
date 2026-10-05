@@ -337,6 +337,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
 st.markdown(
     '<div class="section-title">Analyze your text</div>',
     unsafe_allow_html=True,
@@ -383,7 +384,8 @@ if analyze:
 
                 pii_result = scan_and_redact(text)
 
-            safe_text = pii_result["redacted_text"]
+                safe_text = pii_result["redacted_text"]
+                st.session_state['safe_text']=safe_text
 
             if pii_result["pii_detected"]:
 
@@ -694,43 +696,44 @@ if analyze:
                         "No named entities detected."
                     )
 
-            st.markdown(
-                '<div class="section-title">'
+            if "safe_text" in st.session_state:
+
+              st.markdown(  '<div class="section-title">'
                 '✨ AI Text Continuation'
-                '</div>',
-                unsafe_allow_html=True,
-            )
+                 '</div>',
+                  unsafe_allow_html=True,
+    )
 
+              st.markdown(  '<div class="ai-description">'
+             'Generated from the privacy-sanitized text using '
+              'the Qwen instruction-tuned language model.'
+              '</div>',
+              unsafe_allow_html=True,
+    )
 
-            st.markdown(
-                '<div class="ai-description">'
-                'Generated from the privacy-sanitized text using '
-                'the Qwen instruction-tuned language model.'
-                '</div>',
-                unsafe_allow_html=True,
-            )
+              generate_continuation = st.button( "✨ Generate AI Continuation",
+                   use_container_width=True,)
+    
+              if generate_continuation:
 
-            with st.spinner(
-                "✨ Generating continuation..."):
-                continuation = generate_text(safe_text)
+                with st.spinner("✨ Loading AI model and generating continuation..." ):
 
-            if continuation:
+                   continuation = generate_text(st.session_state["safe_text"] )
 
-                with st.container(border=True):
-                    st.markdown(
-                        '<div class="ai-label">'
-                        '✨ GENERATED CONTINUATION'
-                        '</div>',
-                        unsafe_allow_html=True,
-                    )
+                if continuation:
 
-                    st.write(continuation)
-
-            else:
-
-                st.info(
-                    "The model did not generate additional text."
+                    with st.container(border=True):
+                     st.markdown(
+                    '<div class="ai-label">'
+                    '✨ GENERATED CONTINUATION'
+                    '</div>',
+                    unsafe_allow_html=True,
                 )
+
+                     st.write(continuation)
+
+                else:
+                   st.info( "The model did not generate additional text." )
 
         except Exception as e:
 
