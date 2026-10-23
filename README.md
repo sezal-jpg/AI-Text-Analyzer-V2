@@ -1,4 +1,4 @@
-TextShield AI — Privacy-Aware Intelligent Text Analysis
+🛡️TextShield AI — Privacy-Aware Intelligent Text Analysis
 
 TextShield AI is a privacy-focused text analysis application that combines a multi-layer PII firewall, Azure AI Language services, and the Qwen 2.5 1.5B instruction-tuned language model to analyze and continue user-provided text.
 
@@ -8,7 +8,9 @@ Detect and remove sensitive information before sending text to downstream AI and
 🚀 Live Demo
 
 Azure Deployment:
+
 https://sezal-jpg.github.io/AI-Text-Analyzer-V2/
+
 GitHub Repository:
 https://github.com/sezal-jpg/AI-Text-Analyzer-V2
 
@@ -53,6 +55,7 @@ https://github.com/sezal-jpg/AI-Text-Analyzer-V2
 The key privacy principle is that the original text passes through the PII firewall first. Downstream analysis and generation operate on the privacy-sanitized text.
 
 🔐 Privacy Firewall
+
 The PII firewall is the core security layer of TextShield AI.
 It uses multiple detection layers:
 1. Azure AI Language PII detection
@@ -65,6 +68,7 @@ It uses multiple detection layers:
 Sensitive information is redacted before the sanitized text is passed to the downstream analysis and generation components.
 
 PII Categories
+
 The firewall currently handles categories and patterns such as:
 - Email addresses
 - Phone numbers
@@ -145,6 +149,7 @@ The dashboard provides:
 - Estimated reading time
 
 🛠️ Technology Stack
+
 Frontend
 - Streamlit
 AI / Machine Learning
@@ -262,10 +267,12 @@ Sanitized Text
     ├──────────────► Azure AI Language
     │
     └──────────────► Qwen Model
+
 This ensures that downstream analysis and generation components receive the sanitized version of the text.
 The PII firewall combines Azure's PII detection capabilities with application-level thresholds, contextual rules, deterministic validation, secret detection, and redaction logic.
 
 ⚠️ Important Security Note
+
 TextShield AI is an educational and portfolio project demonstrating privacy-aware AI application design.
 It should not be considered a complete enterprise Data Loss Prevention (DLP) solution or a guarantee of zero data leakage.
 Production systems should include additional controls such as:
@@ -280,6 +287,7 @@ Production systems should include additional controls such as:
 Content safety and inappropriate-content detection are considered future improvements and are outside the primary scope of the current project.
 
 🎯 Project Goals
+
 The project demonstrates how a privacy layer can be placed in front of AI-powered text-processing systems.
 The main design goal is:
 Privacy First → Analyze Safely → Generate Responsibly
@@ -292,6 +300,7 @@ The project focuses primarily on:
 - Deploying the complete application as a cloud-hosted containerized service
 
 🚀 Future Improvements
+
 Possible future enhancements include:
 - Advanced content-safety and inappropriate-content detection
 - Stronger output moderation
@@ -309,7 +318,9 @@ Sezal
 BTech — Artificial Intelligence & Machine Learning
 
 📌 Project Links
+
 Live Application:
 https://sezal-jpg.github.io/AI-Text-Analyzer-V2/
+
 GitHub:
 https://github.com/sezal-jpg/AI-Text-Analyzer-V2
